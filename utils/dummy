@@ -1,0 +1,10 @@
+'host' : {
+		'categories' : {
+				'category1' : [
+						'item1' : {
+							'price' : 102.65
+							'availability' : true
+						}
+				]
+		}
+}
