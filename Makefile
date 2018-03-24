@@ -11,7 +11,7 @@ start_redis :
 
 run :
 	export FLASK_APP=app.py
-	uwsgi --socket 127.0.0.1:4242 --module app --callab app
+	uwsgi --ini config.ini
 
 go : nginx py_deps conf_redis
 	uwsgi --ini config.ini
