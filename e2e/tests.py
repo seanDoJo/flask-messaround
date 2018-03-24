@@ -1,15 +1,15 @@
 import requests
 
-r = requests.post("http://localhost:5000/create",json={"host":"The Walrus"})
+r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/create",json={"host":"The Walrus"})
 
 print(r.json())
 
-r = requests.post("http://localhost:5000/get",json={"host":"The Walrus"})
+r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/get",json={"host":"The Walrus"})
 
 print(r.json())
 
 r = requests.post(
-        "http://localhost:5000/put",
+        "http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/put",
         json={
             "host":"The Walrus",
             "categories" : {
@@ -26,7 +26,7 @@ r = requests.post(
 print(r.json())
 
 r = requests.post(
-        "http://localhost:5000/get",
+        "http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/get",
         json={
             "host":"The Walrus"
         }
@@ -35,7 +35,7 @@ r = requests.post(
 print(r.json())
 
 r = requests.post(
-        "http://localhost:5000/put",
+        "http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/put",
         json={
             "host":"The Walrus",
             "categories" : {
@@ -52,7 +52,7 @@ r = requests.post(
 print(r.json())
 
 r = requests.post(
-        "http://localhost:5000/get",
+        "http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/get",
         json={
             "host":"The Walrus"
         }
@@ -60,14 +60,14 @@ r = requests.post(
 
 print(r.json())
 
-r = requests.get("http://localhost:5000/list")
+r = requests.get("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/list")
 print(r.json())
 
-r = requests.get("http://localhost:5000/lookup/walr")
+r = requests.get("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/lookup/walr")
 print(r.json())
 
 r = requests.post(
-        "http://localhost:5000/place",
+        "http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/place",
         json={
             "host" : "The Walrus",
             "order" : {
@@ -82,7 +82,7 @@ r = requests.post(
 print(r.json())
 
 r = requests.post(
-        "http://localhost:5000/get",
+        "http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/get",
         json={
             "host":"The Walrus"
         }
