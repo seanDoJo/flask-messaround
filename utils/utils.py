@@ -1,4 +1,5 @@
 from flask import jsonify, json
+from datetime import datetime
 
 def processUpdate(form, red):
     if 'host' not in form:
@@ -38,10 +39,46 @@ def processCreate(form, red, t):
         return False
 
     data = {
-            'categories' : {}
+            'categories' : {},
+            'pending_orders' : [],
     }
 
     t.insert(host)
     red.set(host, json.dumps(data))
 
     return True
+
+# TODO: at scale, this will be littered with
+# race conditions
+def placeOrder(form, red):
+    if 'host' not in form or 'order' not in form:
+        return False
+
+    host = form['host']
+    order = form['order']
+
+    order['ready'] = False
+    order['time'] = str(datetime.now())
+
+    hostData = red.get(host)
+    if not hostData:
+        return False
+
+    hostData = json.loads(hostData) 
+    hostData['pending_orders'].append(form['order'])
+
+    red.set(host, json.dumps(hostData))
+
+    return True
+
+def fulfillOrder(form, red):
+    if 'host' not in form:
+        return False
+
+    host = form['host']
+    hostData = red.get(host)
+    if not hostData:
+        return False
+
+    hostData = json.loads(hostData)
+

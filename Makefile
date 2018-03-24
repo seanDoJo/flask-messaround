@@ -1,3 +1,5 @@
+.PHONY: nginx
+
 status_redis :
 	cat /var/log/redis_6379.log
 
@@ -9,6 +11,13 @@ start_redis :
 
 run :
 	export FLASK_APP=app.py && flask run
+
+nginx :
+	apt-get update
+	apt-get install nginx
+	service nginx stop
+	cp nginx/default /etc/nginx/sites-enabled/
+	service nginx start
 
 py_deps :
 	pip3 install redis

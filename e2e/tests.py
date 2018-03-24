@@ -65,3 +65,27 @@ print(r.json())
 
 r = requests.get("http://localhost:5000/lookup/walr")
 print(r.json())
+
+r = requests.post(
+        "http://localhost:5000/place",
+        json={
+            "host" : "The Walrus",
+            "order" : {
+                "Sean Donohoe" : {
+                    "Left Hand Milk Stout" : {
+                        "quantity" : 2
+                    }
+                }
+            }
+        }
+)
+print(r.json())
+
+r = requests.post(
+        "http://localhost:5000/get",
+        json={
+            "host":"The Walrus"
+        }
+)
+
+print(r.json())

@@ -1,8 +1,8 @@
 'host' : {
 		'categories' : {
-				'category1' : [
-						'item1' : {
-							'price' : 102.65
+				'Beer' : [
+						'Left Hand Milk Stout' : {
+							'price' : 12.65
 							'availability' : true
 						}
 				]
