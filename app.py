@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, json
 from utils.utils import processUpdate, processCreate, placeOrder, fulfillOrder
 from utils.tri import Tri
 import redis
@@ -40,7 +40,7 @@ def get():
         return jsonify({"error":"invalid format"}), 400
     d = r.get(request.json["host"])
     if d:
-        return jsonify(d),200
+        return jsonify(json.loads(d)),200
     return jsonify({"error":"entry doesn't exist"}),400
 
 # list restaurants
@@ -48,7 +48,7 @@ def get():
 @app.route('/list', methods=['GET'])
 def list():
     return jsonify({
-        k:True
+        k.decode('utf-8'):True
         for k in r.keys('*')
     })
 
