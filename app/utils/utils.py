@@ -5,7 +5,6 @@ import requests
 import os
 
 def processUpdate(form, red):
-    print("in processUpdate")
     if 'host' not in form:
         return False
 
@@ -49,7 +48,7 @@ def processCreate(form, red, t):
     t.insert(host)
     red.set(host, json.dumps(data))
 
-    res = requests.post("http://localhost:5000/create", json={"host": host})
+    res = requests.post("http://172.31.34.71/write/create", json={"host": host})
 
     return jsonify(res.json()), 200
 
@@ -65,7 +64,7 @@ def placeOrder(form, red):
 
     d = {'host':host, 'order':order}
 
-    res = requests.post("http://localhost:5000/add", json=d)
+    res = requests.post("http://172.31.34.71/write/add", json=d)
 
     return jsonify(res.json()), 200
 
@@ -73,7 +72,7 @@ def getOrders(form, red):
     if 'host' not in form:
         return jsonify({'error':'invalid format'}), 400
 
-    res = requests.post("http://localhost:5000/list", json={'host':form['host']})
+    res = requests.post("http://172.31.34.71/read/list", json={'host':form['host']})
 
     return jsonify(res.json()), 200
 

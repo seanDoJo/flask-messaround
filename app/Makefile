@@ -8,10 +8,10 @@ go : py_deps conf_redis
 	uwsgi --ini config.ini
 
 py_deps :
-	yum install gcc
-	yum install python35
-	yum install python35-pip
-	yum install python35-devel
+	yum install -y gcc
+	yum install -y python35
+	yum install -y python35-pip
+	yum install -y python35-devel
 	pip-3.5 install redis
 	pip-3.5 install flask
 	pip-3.5 install uwsgi 
