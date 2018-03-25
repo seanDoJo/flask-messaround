@@ -1,4 +1,4 @@
-.PHONY: nginx
+.PHONY: nginx, e2e
 
 status_redis :
 	cat /var/log/redis_6379.log
@@ -8,6 +8,9 @@ stop_redis :
 
 start_redis :
 	/etc/init.d/redis_6379 start
+
+e2e : 
+	uwsgi --ini test.ini
 
 run :
 	export FLASK_APP=app.py

@@ -2,6 +2,8 @@ from flask import jsonify, json
 from datetime import datetime
 import requests
 
+import os
+
 def processUpdate(form, red):
     if 'host' not in form:
         return False
@@ -83,25 +85,31 @@ def fulfillOrder(form, red):
 
     hostData = json.loads(hostData)
 
-def validateToken(func, user_token, access_token):
-    def func_wrapper(*args, **kwargs):
-    	url = "https://graph.facebook.com/debug_token?input_token={}&access_token={}".format(user_token, access_token)
-    	r = requests.get(url)
-    	data = r.json()
+def validateToken(access_token):
+    def dec(func):
+        def handle(*args, **kwargs):
+            token = kwargs.pop("token", None)
+            data = requests.get(
+                "https://graph.facebook.com/debug_token?input_token={}&access_token={}".format(token, access_token)
+            ).json()['data']
 
-    	if 'error' in data:
-        	return jsonify({'error' : 'invalid user token'}),400
+            if 'error' in data:
+                    return jsonify({'error' : 'invalid user token'}),400
 
-    	if not data['is_valid']:
-        	return jsonify({'error' : 'invalid user token'}),400
+            if not data['is_valid']:
+                    return jsonify({'error' : 'invalid user token'}),400
 
-    	return func(*args, **kwargs)
-    return func_wrapper
+            return func(*args, **kwargs)
+
+        handle.__name__ = func.__name__
+        return handle 
+    return dec
 
 def getAccessToken():
-    # dummy data
-    app_id = '22847227106406a'
-    app_secret = '6c78b1d22492ec45834762db2e4dcfef'
+    app_id = os.environ["APP_ID"]
+    app_secret = os.environ["APP_SECRET"]
     link = 'https://graph.facebook.com/oauth/access_token?client_id={}&client_secret={}&grant_type=client_credentials'.format(app_id, app_secret)
 
-    return requests.get(link).json()['access_token']
+    j = requests.get(link).json()
+
+    return j["access_token"]

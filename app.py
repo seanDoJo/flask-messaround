@@ -19,7 +19,7 @@ for k in r.keys('*'):
 # TODO: validate the creator
 # TODO: pass data in on creation?
 @app.route('/create/<token>', methods=['POST'])
-@validateToken(token, accessToken)
+@validateToken(accessToken)
 def create():
     if not request.json:
         return jsonify({"error":"invalid format"}), 400
@@ -29,64 +29,58 @@ def create():
 
 # updating restaurant data
 @app.route('/put/<token>', methods=['POST'])
-def put(token):
+@validateToken(accessToken)
+def put():
     if not request.json:
         return jsonify({"error":"invalid format"}), 400
-    if not validateToken(token, accessToken):
-        if processUpdate(request.json, r):
-            return jsonify({"success":"true"}), 201
-        return jsonify({"error":"couldn't process update"}), 500
-    return jsonify({"error":"invalid token"}), 500
+    if processUpdate(request.json, r):
+        return jsonify({"success":"true"}), 201
+    return jsonify({"error":"couldn't process update"}), 500
 
 # fetching restaurant data
 @app.route('/get/<token>', methods=['POST'])
-def get(token):
+@validateToken(accessToken)
+def get():
     if not request.json:
         return jsonify({"error":"invalid format"}), 400
-    if not validateToken(token, accessToken):
-        d = r.get(request.json["host"])
-        if d:
-            return jsonify(json.loads(d)),200
-        return jsonify({"error":"entry doesn't exist"}),400
-    return jsonify({"error":"invalid token"}), 500
+    d = r.get(request.json["host"])
+    if d:
+        return jsonify(json.loads(d)),200
+    return jsonify({"error":"entry doesn't exist"}),400
 
 # list restaurants
 # TODO: list restaurants nearby
 @app.route('/list/<token>', methods=['GET'])
-def list(token):
-    if not validateToken(token, accessToken):
-        return jsonify({
-            k.decode('utf-8'):True
-            for k in r.keys('*')
-        })
-    return jsonify({"error":"invalid token"}), 500
+@validateToken(accessToken)
+def list():
+    return jsonify({
+        k.decode('utf-8'):True
+        for k in r.keys('*')
+    })
 
 # autocomplete search
 # TODO: only return a fixed number
 @app.route('/lookup/<token>/<prefix>', methods=['GET'])
-def lookup(token, prefix):
-    if not validateToken(token, accessToken):
-        l = lookupTree.lookup(prefix)
-        return jsonify(l)
-    return jsonify({"error":"invalid token"}), 500
+@validateToken(accessToken)
+def lookup(prefix):
+    l = lookupTree.lookup(prefix)
+    return jsonify(l)
 
 # placing orders
 @app.route('/place/<token>', methods=['POST'])
-def place(token):
+@validateToken(accessToken)
+def place():
     if not request.json:
         return jsonify({"error":"invalid format"}), 400
-    if not validateToken(token, accessToken):
-        if placeOrder(request.json, r):
-            return jsonify({"success":"true"}),201
-        return jsonify({"error":"invalid format"}), 400
-    return jsonify({"error":"invalid token"}), 500
+    if placeOrder(request.json, r):
+        return jsonify({"success":"true"}),201
+    return jsonify({"error":"invalid format"}), 400
 
 @app.route('/fulfill/<token>', methods=['POST'])
-def fulfill(token):
+@validateToken(accessToken)
+def fulfill():
     if not request.json:
         return jsonify({"error":"invalid format"}), 400
-    if not validateToken(token, accessToken):
-        if fulfillOrder(request.json, r):
-            return jsonify({"success":"true"}),201
-        return jsonify({"error":"invalid format"}), 400
-    return jsonify({"error":"invalid token"}), 500
+    if fulfillOrder(request.json, r):
+        return jsonify({"success":"true"}),201
+    return jsonify({"error":"invalid format"}), 400
