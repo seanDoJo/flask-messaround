@@ -2,7 +2,7 @@ run :
 	uwsgi --ini write.ini
 	uwsgi --ini read.ini
 
-go : py_deps conf_redis
+go : py_deps conf_redis nginx
 	uwsgi --ini write.ini
 	uwsgi --ini read.ini
 
@@ -31,6 +31,12 @@ build_redis :
 	rm redis-stable.tar.gz
 	cd redis-stable/deps && make hiredis lua jemalloc linenoise
 	cd redis-stable && make && make install
+
+nginx :
+	yum install nginx
+	service nginx stop
+	cp ../nginx/nginx.conf.queue /etc/nginx/nginx.conf
+	service nginx start
 
 clean :
 	rm *.gz
