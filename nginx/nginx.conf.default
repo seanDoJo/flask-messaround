@@ -86,7 +86,7 @@ server {
 
 	location / {
 		include uwsgi_params;
-		uwsgi_pass 127.0.0.1:4242;
+		uwsgi_pass ec2-52-14-252-132.us-east-2.compute.amazonaws.com:4242;
 
 		proxy_redirect off;
 		proxy_set_header Host $host;
