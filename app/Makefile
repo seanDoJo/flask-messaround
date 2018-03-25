@@ -4,7 +4,7 @@ e2e :
 run :
 	uwsgi --ini config.ini
 
-go : nginx py_deps conf_redis
+go : py_deps conf_redis
 	uwsgi --ini config.ini
 
 py_deps :
@@ -15,13 +15,14 @@ py_deps :
 	pip-3.5 install redis
 	pip-3.5 install flask
 	pip-3.5 install uwsgi 
+	pip-3.5 install requests
 
 conf_redis : build_redis
 	mkdir /etc/redis
 	mkdir /var/redis
-	cp redis/redis_init_script /etc/init.d/redis_6379
-	cp redis/redis.conf /etc/redis/6379.conf
-	mkdir /var/reds/6379
+	cp ../redis/redis_init_script /etc/init.d/redis_6379
+	cp ../redis/redis.conf /etc/redis/6379.conf
+	mkdir /var/redis/6379
 	/etc/init.d/redis_6379 start
 	rm -rf redis-stable
 
