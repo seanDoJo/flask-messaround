@@ -83,18 +83,20 @@ def fulfillOrder(form, red):
 
     hostData = json.loads(hostData)
 
-def validateToken(user_token, access_token):
-    url = "https://graph.facebook.com/debug_token?input_token={}&access_token={}".format(user_token, access_token)
-    r = requests.get(url)
-    data = r.json()
+def validateToken(func, user_token, access_token):
+    def func_wrapper(*args, **kwargs):
+    	url = "https://graph.facebook.com/debug_token?input_token={}&access_token={}".format(user_token, access_token)
+    	r = requests.get(url)
+    	data = r.json()
 
-    if 'error' in data:
-        return 1
+    	if 'error' in data:
+        	return jsonify({'error' : 'invalid user token'}),400
 
-    if not data['is_valid']:
-        return 2
+    	if not data['is_valid']:
+        	return jsonify({'error' : 'invalid user token'}),400
 
-    return 0
+    	return func(*args, **kwargs)
+    return func_wrapper
 
 def getAccessToken():
     # dummy data

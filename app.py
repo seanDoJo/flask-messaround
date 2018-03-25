@@ -19,14 +19,13 @@ for k in r.keys('*'):
 # TODO: validate the creator
 # TODO: pass data in on creation?
 @app.route('/create/<token>', methods=['POST'])
-def create(token):
+@validateToken(token, accessToken)
+def create():
     if not request.json:
         return jsonify({"error":"invalid format"}), 400
-    if not validateToken(token, accessToken):
-        if processCreate(request.json, r, lookupTree):
-            return jsonify({"success":"true"}), 201
-        return jsonify({"error":"entry already exists"}), 500
-    return jsonify({"error":"invalid token"}), 500
+    if processCreate(request.json, r, lookupTree):
+        return jsonify({"success":"true"}), 201
+    return jsonify({"error":"entry already exists"}), 500
 
 # updating restaurant data
 @app.route('/put/<token>', methods=['POST'])
