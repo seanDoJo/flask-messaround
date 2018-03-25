@@ -1,0 +1,10 @@
+'host' : {
+		'categories' : {
+				'Beer' : [
+						'Left Hand Milk Stout' : {
+							'price' : 12.65
+							'availability' : true
+						}
+				]
+		}
+}
