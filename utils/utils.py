@@ -35,11 +35,11 @@ def processUpdate(form, red):
 
 def processCreate(form, red, t):
     if 'host' not in form:
-        return False
+        return jsonify({"error":"invalid format"}), 400
 
     host = form['host']
     if red.get(host):
-        return False
+        return jsonify({"error":"entry already exists"}), 400
 
     data = {
             'categories' : {},
@@ -49,13 +49,13 @@ def processCreate(form, red, t):
     t.insert(host)
     red.set(host, json.dumps(data))
 
-    return True
+    res = requests.post("http://localhost:8000/create", json={"host": host})
 
-# TODO: at scale, this will be littered with
-# race conditions
+    return jsonify(res.json()), 200
+
 def placeOrder(form, red):
     if 'host' not in form or 'order' not in form:
-        return False
+        return jsonify({'error':'invalid format'}), 400
 
     host = form['host']
     order = form['order']
@@ -63,16 +63,20 @@ def placeOrder(form, red):
     order['ready'] = False
     order['time'] = str(datetime.now())
 
-    hostData = red.get(host)
-    if not hostData:
-        return False
+    d = {'host':host, 'order':order}
 
-    hostData = json.loads(hostData) 
-    hostData['pending_orders'].append(form['order'])
+    res = requests.post("http://localhost:8000/add", json=d)
 
-    red.set(host, json.dumps(hostData))
+    return jsonify(res.json()), 200
 
-    return True
+def getOrders(form, red):
+    if 'host' not in form:
+        return jsonify({'error':'invalid format'}), 400
+
+    res = requests.get("http://localhost:8000/list/{}".format(form['host']))
+
+    return jsonify(res.json()), 200
+
 
 def fulfillOrder(form, red):
     if 'host' not in form:

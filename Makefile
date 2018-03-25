@@ -10,13 +10,18 @@ start_redis :
 	/etc/init.d/redis_6379 start
 
 e2e : 
+	export FLASK_APP=utils/queue.py
+	flask run &
 	uwsgi --ini test.ini
 
 run :
-	export FLASK_APP=app.py
+	export FLASK_APP=utils/queue.py
+	flask run &
 	uwsgi --ini config.ini
 
 go : nginx py_deps conf_redis
+	export FLASK_APP=utils/queue.py
+	flask run &
 	uwsgi --ini config.ini
 
 nginx :

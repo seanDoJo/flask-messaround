@@ -23,9 +23,7 @@ for k in r.keys('*'):
 def create():
     if not request.json:
         return jsonify({"error":"invalid format"}), 400
-    if processCreate(request.json, r, lookupTree):
-        return jsonify({"success":"true"}), 201
-    return jsonify({"error":"entry already exists"}), 500
+    return processCreate(request.json, r, lookupTree)
 
 # updating restaurant data
 @app.route('/put/<token>', methods=['POST'])
@@ -72,9 +70,14 @@ def lookup(prefix):
 def place():
     if not request.json:
         return jsonify({"error":"invalid format"}), 400
-    if placeOrder(request.json, r):
-        return jsonify({"success":"true"}),201
-    return jsonify({"error":"invalid format"}), 400
+    return placeOrder(request.json, r):
+
+@app.route('/listorders/<token>/<host>', methods=['GET'])
+@validateToken(accessToken)
+def listorders(host):
+    if not request.json:
+        return jsonify({"error":"invalid format"}), 400
+    return getOrders(request.json, r)
 
 @app.route('/fulfill/<token>', methods=['POST'])
 @validateToken(accessToken)
