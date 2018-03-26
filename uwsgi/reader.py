@@ -1,10 +1,13 @@
 from flask import Flask, request, json, jsonify
 import redis
+from utils.utils import validateToken, getAccessToken
 
 app = Flask(__name__)
 r = redis.Redis(host='localhost', port=6379, db=0)
+accessToken = getAccessToken()
 
-@app.route('/orders/get/list', methods=['POST'])
+@app.route('/orders/get/list/<token>', methods=['POST'])
+@validateToken(accessToken)
 def list():
     host = "{}_pending".format(request.json['host'])
     hostData = r.get(host)

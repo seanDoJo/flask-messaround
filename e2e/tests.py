@@ -4,17 +4,16 @@ import os
 d = os.getenv("ACCESS_TOKEN", "none")
 r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/data/create/{}".format(d),json={"host":"The Walrus"})
 print(r.json())
-exit(0)
 
-r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/get/{}".format(d),json={"host":"The Walrus"})
+r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/data/get/{}".format(d),json={"host":"The Walrus"})
 print(r)
 print(r.json())
 
-r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/listorders/{}".format(d), json={'host':'The Walrus'})
+r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/orders/get/list", json={'host':'The Walrus'})
 print(r.json())
 
 r = requests.post(
-        "http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/put/{}".format(d),
+        "http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/data/put/{}".format(d),
         json={
             "host":"The Walrus",
             "categories" : {
@@ -29,6 +28,7 @@ r = requests.post(
 )
 print(r)
 print(r.json())
+exit(0)
 
 r = requests.post(
         "http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/place/{}".format(d),
