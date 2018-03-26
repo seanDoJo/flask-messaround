@@ -18,9 +18,9 @@ def state():
 
     order_no = request.json['order_no']
 
-    for order in hostData['pending']:
+    for i,order in enumerate(hostData['pending']):
         if order['order_no'] == order_no:
-            hostData['pending'][order]['state'] = request.json['state']
+            hostData['pending'][i]['state'] = request.json['state']
             break
     r.set(host, json.dumps(hostData))
     return jsonify({'success':True}), 201
