@@ -1,11 +1,9 @@
-e2e : 
-	uwsgi --ini test.ini
-
-run :
-	ln -s utils ../utils
+run : 
+	ln -s ../utils utils
 	uwsgi --ini config.ini
 
 go : py_deps conf_redis
+	ln -s ../utils utils
 	uwsgi --ini config.ini
 
 py_deps :

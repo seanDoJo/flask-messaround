@@ -1,2 +1,5 @@
 __pycache__/
 *.py[cod]
+
+app/utils
+uwsgi/utils

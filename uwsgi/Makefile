@@ -1,5 +1,5 @@
 run :
-	ln -s utils ../utils
+	ln -s ../utils utils
 	uwsgi --ini write.ini
 	uwsgi --ini read.ini
 
