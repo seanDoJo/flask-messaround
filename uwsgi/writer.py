@@ -12,7 +12,7 @@ def create():
     if r.get(host):
         return jsonify({'error': 'host already exists'}), 400
 
-    r.set(host, json.dumps([]))
+    r.set(host, json.dumps({'pending':[],'lon':0))
     return jsonify({'success': 'true'}), 200
 
 @app.route('/orders/update/add/<token>', methods=['POST'])
@@ -23,10 +23,15 @@ def add():
     if not hostData:
         return jsonify({"error":"host doesn't exist"}), 400
 
+    order = request.json['order']
     hostData = json.loads(hostData)
 
-    hostData.append(request.json['order'])
+
+    order['state'] = 0
+    hostData['lon'] += 1
+    order['order_no'] = hostData['lon']
+    hostData['pending'].append(order)
 
     r.set(host, json.dumps(hostData))
 
-    return jsonify({'success':True}), 200
+    return jsonify({'order':hostData['lon']}), 200

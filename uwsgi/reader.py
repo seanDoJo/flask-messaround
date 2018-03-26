@@ -14,6 +14,8 @@ def list():
     if not hostData:
         return jsonify({"error":"host doesn't exist"}), 400
 
-    res = {"orders": json.loads(hostData)}
+    hostData = json.loads(hostData)
+
+    res = {"orders": hostData['pending']}
 
     return jsonify(res), 200
