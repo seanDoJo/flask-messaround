@@ -12,7 +12,7 @@ def create():
     if r.get(host):
         return jsonify({'error': 'host already exists'}), 400
 
-    r.set(host, json.dumps({'pending':[],'lon':0))
+    r.set(host, json.dumps({'pending':[],'lon':0}))
     return jsonify({'success': 'true'}), 200
 
 @app.route('/orders/update/add/<token>', methods=['POST'])
