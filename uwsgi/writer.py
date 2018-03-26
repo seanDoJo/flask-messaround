@@ -10,8 +10,6 @@ def create():
     if r.get(host):
         return jsonify({'error': 'host already exists'}), 400
 
-    host = "{}_pending".format(request.json['host'])
-
     r.set(host, json.dumps([]))
     return jsonify({'success': 'true'}), 200
 
