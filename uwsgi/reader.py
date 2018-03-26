@@ -4,7 +4,7 @@ import redis
 app = Flask(__name__)
 r = redis.Redis(host='localhost', port=6379, db=0)
 
-@app.route('/read/list', methods=['POST'])
+@app.route('/orders/get/list', methods=['POST'])
 def list():
     host = "{}_pending".format(request.json['host'])
     hostData = r.get(host)

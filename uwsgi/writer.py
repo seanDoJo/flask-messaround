@@ -4,7 +4,7 @@ import redis
 app = Flask(__name__)
 r = redis.Redis(host='localhost', port=6379, db=0)
 
-@app.route('/write/create', methods=['POST'])
+@app.route('/orders/update/create', methods=['POST'])
 def create():
     host = "{}_pending".format(request.json['host'])
     if r.get(host):
@@ -15,7 +15,7 @@ def create():
     r.set(host, json.dumps([]))
     return jsonify({'success': 'true'}), 200
 
-@app.route('/write/add', methods=['POST'])
+@app.route('/orders/update/add', methods=['POST'])
 def add():
     host = "{}_pending".format(request.json['host'])
     hostData = r.get(host)
