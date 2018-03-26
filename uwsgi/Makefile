@@ -1,3 +1,9 @@
+kill :
+	kill -9 `cat /tmp/bibe_reader.pid`
+	kill -9 `cat /tmp/bibe_writer.pid`
+	rm -rf __pycache__
+	rm utils
+
 run :
 	ln -s ../utils utils
 	uwsgi --ini write.ini
