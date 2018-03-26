@@ -48,7 +48,9 @@ def processCreate(form, red, t):
     t.insert(host)
     red.set(host, json.dumps(data))
 
-    res = requests.post("http://172.31.34.71/write/create", json={"host": host})
+    res = requests.post("http://172.31.37.250:8080/orders/update/create", json={"host": host})
+
+    print(res)
 
     return jsonify(res.json()), 200
 
