@@ -1,8 +1,10 @@
 from flask import Flask, request, json, jsonify
+from utils.utils import validateToken, getAccessToken
 import redis
 
 app = Flask(__name__)
 r = redis.Redis(host='localhost', port=6379, db=0)
+accessToken = getAccessToken()
 
 @app.route('/orders/update/create', methods=['POST'])
 def create():
@@ -13,7 +15,8 @@ def create():
     r.set(host, json.dumps([]))
     return jsonify({'success': 'true'}), 200
 
-@app.route('/orders/update/add', methods=['POST'])
+@app.route('/orders/update/add/<token>', methods=['POST'])
+@validateToken(accessToken)
 def add():
     host = "{}_pending".format(request.json['host'])
     hostData = r.get(host)

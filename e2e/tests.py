@@ -9,7 +9,7 @@ r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/
 print(r)
 print(r.json())
 
-r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/orders/get/list", json={'host':'The Walrus'})
+r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/orders/get/list/{}".format(d), json={'host':'The Walrus'})
 print(r.json())
 
 r = requests.post(
@@ -28,10 +28,9 @@ r = requests.post(
 )
 print(r)
 print(r.json())
-exit(0)
 
 r = requests.post(
-        "http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/place/{}".format(d),
+        "http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/orders/update/add/{}".format(d),
         json={
             "host" : "The Walrus",
             "order" : {
@@ -45,9 +44,9 @@ r = requests.post(
 )
 print(r.json())
 
-r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/listorders/{}".format(d), json={'host':'The Walrus'})
-
+r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/orders/get/list/{}".format(d), json={'host':'The Walrus'})
 print(r.json())
+
 
 exit(0)
 
