@@ -14,6 +14,8 @@ def state():
     if not hostData:
         return jsonify({"error":"host doesn't exist"}), 400
 
+    hostData = json.loads(hostData)
+
     order_no = request.json['order_no']
 
     for order in hostData['pending']:
