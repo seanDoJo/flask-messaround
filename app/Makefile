@@ -1,3 +1,11 @@
+restart :
+	kill -9 `cat /tmp/bibe_server.pid`
+	rm utils
+	rm -rf __pycache__
+	sleep 5
+	ln -s ../utils utils
+	uwsgi --ini config.ini
+
 kill :
 	kill -9 `cat /tmp/bibe_server.pid`
 	rm utils

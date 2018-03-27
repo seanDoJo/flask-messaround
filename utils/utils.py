@@ -95,7 +95,6 @@ def validateToken(access_token):
         def handle(*args, **kwargs):
             token = kwargs.pop("token", None)
 
-            """
             data = requests.get(
                 "https://graph.facebook.com/debug_token?input_token={}&access_token={}".format(token, access_token)
             ).json()['data']
@@ -105,7 +104,6 @@ def validateToken(access_token):
 
             if not data['is_valid']:
                     return jsonify({'error' : 'invalid user token'}),400
-            """
 
             return func(*args, **kwargs)
 
