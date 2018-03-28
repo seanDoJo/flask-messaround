@@ -19,7 +19,7 @@ for k in r.keys('*'):
 # TODO: validate the creator
 # TODO: pass data in on creation?
 @app.route('/data/create/<token>', methods=['POST'])
-@validateToken(accessToken)
+@validateToken(accessToken, r)
 def create():
     if not request.json:
         return jsonify({"error":"invalid format"}), 400
@@ -27,7 +27,7 @@ def create():
 
 # updating restaurant data
 @app.route('/data/put/<token>', methods=['POST'])
-@validateToken(accessToken)
+@validateToken(accessToken, r)
 def put():
     if not request.json:
         return jsonify({"error":"invalid format"}), 400
@@ -37,19 +37,19 @@ def put():
 
 # fetching restaurant data
 @app.route('/data/get/<token>', methods=['POST'])
-@validateToken(accessToken)
+@validateToken(accessToken, r)
 def get():
     if not request.json:
         return jsonify({"error":"invalid format"}), 400
     d = r.get(request.json["host"])
     if d:
-        return jsonify(json.loads(d)),200
+        return d,200
     return jsonify({"error":"entry doesn't exist"}),400
 
 # list restaurants
 # TODO: list restaurants nearby
 @app.route('/data/list/<token>', methods=['GET'])
-@validateToken(accessToken)
+@validateToken(accessToken, r)
 def list():
     return jsonify({
         k.decode('utf-8'):True
@@ -59,7 +59,7 @@ def list():
 # autocomplete search
 # TODO: only return a fixed number
 @app.route('/data/lookup/<token>/<prefix>', methods=['GET'])
-@validateToken(accessToken)
+@validateToken(accessToken, r)
 def lookup(prefix):
     l = lookupTree.lookup(prefix)
     return jsonify(l)

@@ -90,22 +90,33 @@ def fulfillOrder(form, red):
 
     hostData = json.loads(hostData)
 
-def validateToken(access_token):
+def validateToken(access_token, red):
     def dec(func):
         def handle(*args, **kwargs):
             token = kwargs.pop("token", None)
 
+            t = red.get(token)
+            if t and t != 'invalid':
+                if t == 'valid':
+                    return func(*args, **kwargs)
+                else:
+                    return jsonify({'error': 'invalid user token'}), 400
+                
             data = requests.get(
                 "https://graph.facebook.com/debug_token?input_token={}&access_token={}".format(token, access_token)
             ).json()['data']
            
             """ 
             if 'error' in data:
+                    red.set(token, 'invalid')
                     return jsonify({'error' : 'invalid user token'}),400
 
             if not data['is_valid']:
+                    red.set(token, 'invalid')
                     return jsonify({'error' : 'invalid user token'}),400
             """
+
+            red.set(token, 'valid')
 
             return func(*args, **kwargs)
 
