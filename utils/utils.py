@@ -98,12 +98,14 @@ def validateToken(access_token):
             data = requests.get(
                 "https://graph.facebook.com/debug_token?input_token={}&access_token={}".format(token, access_token)
             ).json()['data']
-
+           
+            """ 
             if 'error' in data:
                     return jsonify({'error' : 'invalid user token'}),400
 
             if not data['is_valid']:
                     return jsonify({'error' : 'invalid user token'}),400
+            """
 
             return func(*args, **kwargs)
 
