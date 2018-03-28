@@ -7,15 +7,12 @@ r = redis.Redis(host='localhost', port=6379, db=0)
 accessToken = getAccessToken()
 
 @app.route('/orders/get/list/<token>', methods=['POST'])
-@validateToken(accessToken)
+@validateToken(accessToken, r)
 def list():
-    host = "{}_pending".format(request.json['host'])
-    hostData = r.get(host)
+    hostData = r.get(
+        "{}_pending".format(request.json['host'])
+    )
     if not hostData:
         return jsonify({"error":"host doesn't exist"}), 400
 
-    hostData = json.loads(hostData)
-
-    res = {"orders": hostData['pending']}
-
-    return jsonify(res), 200
+    return hostData, 200

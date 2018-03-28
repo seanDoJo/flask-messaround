@@ -4,6 +4,8 @@ import requests
 
 import os
 
+VALID_TOKEN = b'valid'
+
 def processUpdate(form, red):
     if 'host' not in form:
         return False
@@ -96,8 +98,8 @@ def validateToken(access_token, red):
             token = kwargs.pop("token", None)
 
             t = red.get(token)
-            if t and t != 'invalid':
-                if t == 'valid':
+            if t:
+                if t == VALID_TOKEN:
                     return func(*args, **kwargs)
                 else:
                     return jsonify({'error': 'invalid user token'}), 400

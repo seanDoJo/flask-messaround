@@ -7,7 +7,7 @@ r = redis.Redis(host='localhost', port=6379, db=0)
 accessToken = getAccessToken()
 
 @app.route('/orders/update/state/<token>', methods=['POST'])
-@validateToken(accessToken)
+@validateToken(accessToken, r)
 def state():
     host = "{}_pending".format(request.json['host'])
     hostData = r.get(host)
@@ -35,7 +35,7 @@ def create():
     return jsonify({'success': 'true'}), 200
 
 @app.route('/orders/update/add/<token>', methods=['POST'])
-@validateToken(accessToken)
+@validateToken(accessToken, r)
 def add():
     host = "{}_pending".format(request.json['host'])
     hostData = r.get(host)
