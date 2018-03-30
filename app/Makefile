@@ -17,7 +17,7 @@ run :
 
 go : py_deps conf_redis
 	ln -s ../utils utils
-	uwsgi --ini config.ini
+	/usr/local/bin/uwsgi --ini config.ini
 
 py_deps :
 	yum install -y gcc
