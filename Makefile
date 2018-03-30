@@ -7,7 +7,7 @@ restart :
 	service nginx start
 
 nginx :
-	yum install nginx
+	yum install -y nginx
 	mkdir /var/www /var/www/bibe
 	chown nginx:nginx /var/www/bibe
 	service nginx stop
