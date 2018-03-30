@@ -22,16 +22,15 @@ location /{} {{
 """.format(path, ip, port)
         )
 
-    update = Popen(
-        [
-            'service',
-            'nginx',
-            'restart'
-        ],
-        stdout=PIPE,
-        stderr=PIPE
-    )
-
-    stdout, stderr = update.communicate()
+    with open('lastupdate.log', 'w+') as log:
+        update = Popen(
+            [
+                'service',
+                'nginx',
+                'restart'
+            ],
+            stdout=log,
+            stderr=log
+        )
 
     return "received", 201

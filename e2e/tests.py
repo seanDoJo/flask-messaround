@@ -5,7 +5,11 @@ d = os.getenv("ACCESS_TOKEN", "none")
 #r = requests.post("http://ec2-18-188-95-46.us-east-2.compute.amazonaws.com:8080/data/create/{}".format(d),json={"host":"The Walrus"})
 #print(r.json())
 
-r = requests.post("http://ec2-52-14-58-91.us-east-2.compute.amazonaws.com/thewalrus/data/get/{}".format(d),json={"host":"The Walrus"})
+#r = requests.post("http://ec2-52-14-58-91.us-east-2.compute.amazonaws.com/thewalrus/data/get/{}".format(d),json={"host":"The Walrus"})
+#print(r)
+#print(r.json())
+
+r = requests.post("http://ec2-52-14-58-91.us-east-2.compute.amazonaws.com:8000/addconf", json={'url':'dummy', 'ip_addr':'1.1.1.1', 'port':'8080'})
 print(r)
 print(r.json())
 exit(0)
