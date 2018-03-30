@@ -10,8 +10,8 @@ run :
 	uwsgi --ini read.ini
 
 go : py_deps conf_redis
-	uwsgi --ini write.ini
-	uwsgi --ini read.ini
+	/usr/local/bin/uwsgi --ini write.ini
+	/usr/local/bin/uwsgi --ini read.ini
 
 py_deps :
 	yum install -y gcc
