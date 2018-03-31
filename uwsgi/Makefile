@@ -10,6 +10,7 @@ run :
 	uwsgi --ini read.ini
 
 go : py_deps conf_redis
+	ln -s ../utils utils
 	/usr/local/bin/uwsgi --ini write.ini
 	/usr/local/bin/uwsgi --ini read.ini
 
