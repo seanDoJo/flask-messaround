@@ -1,0 +1,11 @@
+
+#!/bin/bash
+
+yum update -y
+yum install -y git python35
+cd /home/ec2-user && git clone https://github.com/seanDoJo/flask-messaround.git
+mkdir /home/ec2-user/flask-messaround/nginx/conf
+chown -R ec2-user /home/ec2-user/flask-messaround
+cd /home/ec2-user/flask-messaround/nginx && /usr/bin/python35 gen_conf.py 172.31.38.201 172.31.34.81
+chown -R ec2-user /home/ec2-user/flask-messaround
+cd /home/ec2-user/flask-messaround && make nginx
