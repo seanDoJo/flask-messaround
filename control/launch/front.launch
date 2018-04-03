@@ -1,7 +1,0 @@
-#!/bin/bash
-
-yum update -y
-yum install -y git
-cd /home/ec2-user && git clone https://github.com/seanDoJo/flask-messaround.git
-chown -R ec2-user /home/ec2-user/flask-messaround
-cd /home/ec2-user/flask-messaround/app && make go
