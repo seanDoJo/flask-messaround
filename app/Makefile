@@ -12,10 +12,12 @@ kill :
 	rm -rf __pycache__
 
 run : 
+	bash rules.sh
 	ln -s ../utils utils
 	uwsgi --ini config.ini
 
 go : py_deps conf_redis
+	bash rules.sh
 	ln -s ../utils utils
 	/usr/local/bin/uwsgi --ini config.ini
 

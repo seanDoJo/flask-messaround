@@ -77,8 +77,9 @@ cd /home/ec2-user && git clone https://github.com/seanDoJo/flask-messaround.git
 chown -R ec2-user /home/ec2-user/flask-messaround
 export APP_ID={}
 export APP_SECRET={}
+export HOST="{}"
 cd /home/ec2-user/flask-messaround/app && make go
-""".format(os.environ['APP_ID'], os.environ['APP_SECRET'])
+""".format(os.environ['APP_ID'], os.environ['APP_SECRET'], host+str(number))
 
 queueData = """
 #!/bin/bash
@@ -89,8 +90,9 @@ cd /home/ec2-user && git clone https://github.com/seanDoJo/flask-messaround.git
 chown -R ec2-user /home/ec2-user/flask-messaround
 export APP_ID={}
 export APP_SECRET={}
+export HOST="{}"
 cd /home/ec2-user/flask-messaround/uwsgi && make go
-""".format(os.environ['APP_ID'], os.environ['APP_SECRET'])
+""".format(os.environ['APP_ID'], os.environ['APP_SECRET'], host+str(number))
 
 front_ip, front_id = tempAndSpawn(frontData, 'sg-0cae6e997c3bbcb91', 'subnet-3ee3df73')
 queue_ip, queue_id = tempAndSpawn(queueData, 'sg-0b4efff588cd6b30e', 'subnet-3ee3df73')
@@ -110,8 +112,6 @@ cd /home/ec2-user/flask-messaround && make nginx
 
 nginx_ip, nginx_id = tempAndSpawn(nginxData, 'sg-0a0a33d5d5babbeab', 'subnet-3ee3df73')
 
-print(nginx_ip)
-
 r = requests.post(
     "http://ec2-52-14-58-91.us-east-2.compute.amazonaws.com:8000/addconf",
     json={
@@ -120,5 +120,4 @@ r = requests.post(
         'port': 8080
     }
 )
-
 print(r)
