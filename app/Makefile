@@ -17,7 +17,6 @@ run :
 	uwsgi --ini config.ini
 
 go : py_deps conf_redis
-	bash rules.sh
 	ln -s ../utils utils
 	/usr/local/bin/uwsgi --ini config.ini
 

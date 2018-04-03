@@ -2,7 +2,7 @@ import requests
 import os
 
 d = os.getenv("ACCESS_TOKEN", "none")
-r = requests.post("http://ec2-52-14-58-91.us-east-2.compute.amazonaws.com/nitro1/data/get/{}".format(d),json={"host":"The Walrus"})
+r = requests.get("http://ec2-52-14-58-91.us-east-2.compute.amazonaws.com/the-rio1/data/get/{}".format(d))
 print(r.json())
 exit(0)
 
