@@ -89,9 +89,9 @@ cd /home/ec2-user && git clone https://github.com/seanDoJo/flask-messaround.git
 chown -R ec2-user /home/ec2-user/flask-messaround
 export APP_ID={}
 export APP_SECRET={}
-export HOST="{}"
+export HOST={}{}
 cd /home/ec2-user/flask-messaround/uwsgi && make go
-""".format(os.environ['APP_ID'], os.environ['APP_SECRET'], host+str(number))
+""".format(os.environ['APP_ID'], os.environ['APP_SECRET'], hostify(host), number)
 
 #front_ip, front_id = tempAndSpawn(frontData, 'sg-0cae6e997c3bbcb91', 'subnet-3ee3df73')
 queue_ip, queue_id = tempAndSpawn(queueData, 'sg-0b4efff588cd6b30e', 'subnet-3ee3df73')

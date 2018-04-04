@@ -1,12 +1,15 @@
 from flask import Flask, request, json, jsonify
 from utils.utils import validateToken, getAccessToken
 import redis
+import os
 
 app = Flask(__name__)
 r = redis.Redis(host='localhost', port=6379, db=0)
 accessToken = getAccessToken()
 
-@app.route('/update/<token>', methods=['POST'])
+host = os.environ['HOST']
+
+@app.route('/update/{}/<token>'.format(host), methods=['POST'])
 @validateToken(accessToken, r)
 def state():
     host = "{}_pending".format(request.json['host'])

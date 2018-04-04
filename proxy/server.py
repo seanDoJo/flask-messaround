@@ -13,7 +13,7 @@ def addconf():
     with open("conf/{}.conf".format(path), 'w+') as f:
         f.write(
 """
-location /{}/update {{
+location update/{} {{
     rewrite /{}/update/(.+) /update/$1 break;
     include uwsgi_params;
     uwsgi_pass {}:{};
@@ -29,7 +29,7 @@ location /{}/update {{
 
         f.write(
 """
-location /{}/orders {{
+location /orders/{} {{
     rewrite /{}/orders/(.+) /orders/$1 break;
     include uwsgi_params;
     uwsgi_pass {}:{};
