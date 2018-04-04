@@ -13,11 +13,11 @@ def addconf():
     with open("conf/{}.conf".format(path), 'w+') as f:
         f.write(
 """
-location /{}/update {{
+location ~* ^/{}/update/(.+)$ {{
     include uwsgi_params;
-    uwsgi_pass {}:{}/update;
+    uwsgi_pass {}:{}/update/$1;
 
-    proxy_redirect_off;
+    proxy_redirect off;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -28,11 +28,11 @@ location /{}/update {{
 
         f.write(
 """
-location /{}/orders {{
+location ~* ^/{}/orders/(.+)$ {{
     include uwsgi_params;
-    uwsgi_pass {}:{}/orders;
+    uwsgi_pass {}:{}/orders/$1;
 
-    proxy_redirect_off;
+    proxy_redirect off;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

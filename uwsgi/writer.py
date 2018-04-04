@@ -6,7 +6,7 @@ app = Flask(__name__)
 r = redis.Redis(host='localhost', port=6379, db=0)
 accessToken = getAccessToken()
 
-@app.route('/orders/update/state/<token>', methods=['POST'])
+@app.route('/update/<token>', methods=['POST'])
 @validateToken(accessToken, r)
 def state():
     host = "{}_pending".format(request.json['host'])
