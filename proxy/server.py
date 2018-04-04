@@ -13,9 +13,10 @@ def addconf():
     with open("conf/{}.conf".format(path), 'w+') as f:
         f.write(
 """
-location ~* ^/{}/update/(.+)$ {{
+location /{}/update {{
+    rewrite /{}/update/(.+) /update/$1 break;
     include uwsgi_params;
-    uwsgi_pass {}:{}/update/$1;
+    uwsgi_pass {}:{};
 
     proxy_redirect off;
     proxy_set_header Host $host;
@@ -23,14 +24,15 @@ location ~* ^/{}/update/(.+)$ {{
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Host $server_name;
 }}
-""".format(path, ip, write_port)
+""".format(path, path, ip, write_port)
         )
 
         f.write(
 """
-location ~* ^/{}/orders/(.+)$ {{
+location /{}/orders {{
+    rewrite /{}/orders/(.+) /orders/$1 break;
     include uwsgi_params;
-    uwsgi_pass {}:{}/orders/$1;
+    uwsgi_pass {}:{};
 
     proxy_redirect off;
     proxy_set_header Host $host;
@@ -38,7 +40,7 @@ location ~* ^/{}/orders/(.+)$ {{
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Host $server_name;
 }}
-""".format(path, ip, read_port)
+""".format(path, path, ip, read_port)
         )
 
     with open('lastupdate.log', 'w+') as log:
