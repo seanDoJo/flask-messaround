@@ -22,6 +22,7 @@ nginx :
 	service nginx stop
 	cp nginx.conf.default /etc/nginx/nginx.conf
 	service nginx start
+	mkdir conf
 
 clean :
 	rm *.gz
