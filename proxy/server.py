@@ -26,7 +26,7 @@ location /{}/update {{
 """.format(path, ip, write_port)
         )
 
-    f.write(
+        f.write(
 """
 location /{}/orders {{
     include uwsgi_params;

@@ -97,7 +97,7 @@ cd /home/ec2-user/flask-messaround/uwsgi && make go
 queue_ip, queue_id = tempAndSpawn(queueData, 'sg-0b4efff588cd6b30e', 'subnet-3ee3df73')
 
 r = requests.post(
-    "http://ec2-52-14-58-91.us-east-2.compute.amazonaws.com:8000/addqueue",
+    "http://ec2-18-217-113-46.us-east-2.compute.amazonaws.com:8000/addqueue",
     json={
         'url': "{}{}".format(hostify(host), number),
         'ip_addr': queue_ip,
