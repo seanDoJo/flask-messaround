@@ -40,7 +40,7 @@ def spawn(securityGroupID, subnetID, userData):
     )
 
     stdout, stderr = front.communicate()
-    j = json.loads(stdout)
+    j = json.loads(stdout.decode('utf-8'))
 
     ip = j['Instances'][0]['PrivateIpAddress']
     iid = j['Instances'][0]['InstanceId']

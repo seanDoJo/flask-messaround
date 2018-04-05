@@ -1,4 +1,4 @@
-go : py_deps
+go :
 	/usr/bin/python35 sql.py
 	/usr/bin/python35 create.py &
 	/usr/local/bin/uwsgi --ini config.ini
