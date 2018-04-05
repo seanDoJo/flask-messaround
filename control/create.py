@@ -58,7 +58,7 @@ def tempAndSpawn(launchData, securityGroupID, subnetID):
 
     return ip,iid
 
-def genLaunch(url):
+def genLaunch(fb_app_id, fb_app_secret, url):
     queueData = """
 #!/bin/bash
 
@@ -70,7 +70,7 @@ export APP_ID={}
 export APP_SECRET={}
 export HOST={}
 cd /home/ec2-user/flask-messaround/uwsgi && make go
-""".format(os.environ['APP_ID'], os.environ['APP_SECRET'], url)
+""".format(fb_app_id, fb_app_secret, url)
     return queueData
 
 def notifyProxy(url, ip, read, write):
@@ -85,6 +85,9 @@ def notifyProxy(url, ip, read, write):
     )
 
 if __name__ == '__main__':
+    fb_app_id = requests.get("http://172.31.36.195:8000/get_preauth/FB_APP_ID").json()['success']
+    fb_app_secret = requests.get("http://172.31.36.195:8000/get_preauth/FB_APP_SECRET").json()['success']
+
     shdir = '/dev/shm'
     engine = create_engine("sqlite:///test_db.db")
     Base.metadata.bind = engine
@@ -104,7 +107,7 @@ if __name__ == '__main__':
             url = "{}{}".format(hostify(host), number)
             address = newData['address']
 
-            queue_ip, queue_id = tempAndSpawn(genLaunch(url), 'sg-0b4efff588cd6b30e', 'subnet-3ee3df73')
+            queue_ip, queue_id = tempAndSpawn(genLaunch(fb_app_id, fb_app_secret, url), 'sg-0b4efff588cd6b30e', 'subnet-3ee3df73')
 
             newHost = Host(
                 host=host,

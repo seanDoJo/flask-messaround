@@ -6,6 +6,10 @@ import os
 
 VALID_TOKEN = b'valid'
 
+#TODO: direct these through regular grab
+fb_app_id = requests.get("http://172.31.36.195:8000/get_preauth/FB_APP_ID").json()['success']
+fb_app_secret = requests.get("http://172.31.36.195:8000/get_preauth/FB_APP_SECRET").json()['success']
+
 def processUpdate(form, red):
     if 'host' not in form:
         return False
@@ -127,8 +131,8 @@ def validateToken(access_token, red):
     return dec
 
 def getAccessToken():
-    app_id = os.environ["APP_ID"]
-    app_secret = os.environ["APP_SECRET"]
+    app_id = fb_app_id
+    app_secret = fb_app_secret
     link = 'https://graph.facebook.com/oauth/access_token?client_id={}&client_secret={}&grant_type=client_credentials'.format(app_id, app_secret)
 
     j = requests.get(link).json()
