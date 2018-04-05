@@ -1,9 +1,10 @@
 from flask import Flask, request, json, jsonify
+import requests
 import os
 
 app = Flask(__name__)
 
-adminToken = os.environ['AD_TOK']
+adminToken = requests.get("http://172.31.36.195:8000/get_preauth/ADMIN_TOKEN")
 
 @app.route('/create/<token>', methods=['POST'])
 def create(token):
