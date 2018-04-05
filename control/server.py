@@ -4,7 +4,8 @@ import os
 
 app = Flask(__name__)
 
-adminToken = requests.get("http://172.31.36.195:8000/get_preauth/ADMIN_TOKEN")
+adminToken = requests.get("http://172.31.36.195:8000/get_preauth/ADMIN_TOKEN").json()['success']
+print(adminToken)
 
 @app.route('/create/<token>', methods=['POST'])
 def create(token):

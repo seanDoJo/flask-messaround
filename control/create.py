@@ -3,7 +3,7 @@ import json
 import os
 import re
 import requests
-from sql import Host
+from sql import Host, Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from time import sleep
@@ -92,12 +92,12 @@ if __name__ == '__main__':
     session = DBSession()
 
     while True:
-        filenames = []
+        files = []
         for (paths, names, filenames) in os.walk(shdir):
             files.extend(filenames)
 
-        if len(filenames):
-            with open(filenames[0], 'r') as ftoadd:
+        if len(files):
+            with open("/dev/shm/{}".format(files[0]), 'r') as ftoadd:
                 newData = json.loads(ftoadd.read())
             host = newData['host']
             number = newData['store_id']
@@ -119,5 +119,5 @@ if __name__ == '__main__':
             session.commit()
 
             notifyProxy(url, queue_ip, 8000, 8080)
-            os.remove(filenames[0])
+            os.remove("/dev/shm/{}".format(files[0]))
         sleep(5)

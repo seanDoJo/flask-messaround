@@ -1,9 +1,3 @@
-restart :
-	service nginx stop
-	cp nginx.conf.default /etc/nginx/nginx.conf
-	sleep 1
-	service nginx start
-
 go : py_deps
 	/usr/bin/python35 sql.py
 	/usr/bin/python35 create.py &
