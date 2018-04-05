@@ -23,7 +23,7 @@ location /update/{} {{
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Host $server_name;
 }}
-""".format(path, path, ip, write_port)
+""".format(path, ip, write_port)
         )
 
         f.write(
@@ -38,7 +38,7 @@ location /orders/{} {{
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Host $server_name;
 }}
-""".format(path, path, ip, read_port)
+""".format(path, ip, read_port)
         )
 
     with open('lastupdate.log', 'w+') as log:

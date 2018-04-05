@@ -8,9 +8,6 @@ r = redis.Redis(host='localhost', port=6379, db=0)
 accessToken = getAccessToken()
 host = os.environ['HOST']
 
-print(host)
-print('/orders/{}/<token>'.format(host))
-
 @app.route('/orders/{}/<token>'.format(host), methods=['POST'])
 @validateToken(accessToken, r)
 def list():
