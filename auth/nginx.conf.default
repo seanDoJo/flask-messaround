@@ -73,6 +73,17 @@ http {
 		proxy_set_header X-Forwarded-Host $server_name;
 	}
 
+    }
+    server {
+	listen 8001;
+	listen [::]:8001;
+
+	root /usr/share/nginx/www;
+
+	index index.html index.htm index.nginx-debian.html;
+
+	access_log /var/log/nginx/uwsgi.access.log main;
+
 	location /get_auth {
 		include uwsgi_params;
 		uwsgi_pass 127.0.0.1:8090;
