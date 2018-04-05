@@ -92,9 +92,7 @@ if __name__ == '__main__':
     mysqlUser = requests.get("http://172.31.36.195:8000/get_preauth/MYSQL_USR").json()['success']
     mysqlPass = requests.get("http://172.31.36.195:8000/get_preauth/MYSQL_PASS").json()['success']
 
-    mysqlUrl = "mysql:/{}:{}@{}:3306/".format(mysqlUser, mysqlPass, mysqlUrl)
-
-    print(mysqlUrl)
+    mysqlUrl = "mysql+pymysql://{}:{}@{}:3306/metadata".format(mysqlUser, mysqlPass, mysqlAddr)
 
     shdir = '/dev/shm'
     engine = create_engine(mysqlUrl)

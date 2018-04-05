@@ -12,6 +12,7 @@ py_deps :
 	pip-3.5 install uwsgi
 	pip-3.5 install requests
 	pip-3.5 install sqlalchemy
+	pip-3.5 install pymysql
 	mkdir launch
 
 clean :
