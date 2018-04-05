@@ -6,6 +6,10 @@ app = Flask(__name__)
 
 adminToken = requests.get("http://172.31.36.195:8000/get_preauth/ADMIN_TOKEN").json()['success']
 
+def hostify(h):
+    s = re.sub(r"[^\w\s]", "", h.lower())
+    return re.sub(r"\s+", "-", s)
+
 @app.route('/create/<token>', methods=['POST'])
 def create(token):
     if token != adminToken:
@@ -26,4 +30,6 @@ def create(token):
     with open('/dev/shm/{}_{}'.format(host, store_id), 'w+') as newHost:
         newHost.write(json.dumps(s))
 
-    return jsonify({"success":"received"}), 201
+    url = "{}{}".format(hostify(host), store_id)
+
+    return jsonify({"success": url}), 201

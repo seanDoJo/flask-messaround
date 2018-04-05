@@ -19,6 +19,15 @@ class Host(Base):
 
 if __name__ == '__main__':
     from sqlalchemy import create_engine
+    import requests
 
-    engine = create_engine("sqlite:///test_db.db")
+    mysqlAddr = requests.get("http://172.31.36.195:8000/get_preauth/MYSQL_IP").json()['success']
+    mysqlUser = requests.get("http://172.31.36.195:8000/get_preauth/MYSQL_USR").json()['success']
+    mysqlPass = requests.get("http://172.31.36.195:8000/get_preauth/MYSQL_PASS").json()['success']
+
+    mysqlUrl = "mysql:/{}:{}@{}:3306/".format(mysqlUser, mysqlPass, mysqlUrl)
+
+    print(mysqlUrl)
+
+    engine = create_engine(mysqlUrl)
     Base.metadata.create_all(engine)

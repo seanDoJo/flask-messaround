@@ -88,8 +88,16 @@ if __name__ == '__main__':
     fb_app_id = requests.get("http://172.31.36.195:8000/get_preauth/FB_APP_ID").json()['success']
     fb_app_secret = requests.get("http://172.31.36.195:8000/get_preauth/FB_APP_SECRET").json()['success']
 
+    mysqlAddr = requests.get("http://172.31.36.195:8000/get_preauth/MYSQL_IP").json()['success']
+    mysqlUser = requests.get("http://172.31.36.195:8000/get_preauth/MYSQL_USR").json()['success']
+    mysqlPass = requests.get("http://172.31.36.195:8000/get_preauth/MYSQL_PASS").json()['success']
+
+    mysqlUrl = "mysql:/{}:{}@{}:3306/".format(mysqlUser, mysqlPass, mysqlUrl)
+
+    print(mysqlUrl)
+
     shdir = '/dev/shm'
-    engine = create_engine("sqlite:///test_db.db")
+    engine = create_engine(mysqlUrl)
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
