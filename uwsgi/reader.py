@@ -11,10 +11,8 @@ host = os.environ['HOST']
 @app.route('/orders/{}/<token>'.format(host), methods=['POST'])
 @validateToken(accessToken, r)
 def list():
-    hostData = r.get(
-        "{}_pending".format(request.json['host'])
-    )
+    hostData = r.get("queue")
     if not hostData:
-        return jsonify({"error":"host doesn't exist"}), 400
+        return jsonify({}), 200
 
     return hostData, 200
