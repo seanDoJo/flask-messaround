@@ -4,7 +4,9 @@ restart :
 	sleep 1
 	service nginx start
 
-go : nginx py_deps
+go : py_deps
+	/usr/bin/python35 sql.py
+	/usr/bin/python35 create.py &
 	/usr/local/bin/uwsgi --ini config.ini
 
 py_deps :
@@ -15,14 +17,8 @@ py_deps :
 	pip-3.5 install flask
 	pip-3.5 install uwsgi
 	pip-3.5 install requests
-
-nginx :
-	yum -y install nginx
-	mkdir /var/www /var/www/bibe
-	chown nginx:nginx /var/www/bibe
-	service nginx stop
-	cp nginx.conf.default /etc/nginx/nginx.conf
-	service nginx start
+	pip-3.5 install sqlalchemy
+	mkdir launch
 
 clean :
 	rm *.gz

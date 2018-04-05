@@ -1,14 +1,12 @@
-import sys
 from subprocess import Popen, PIPE
 import json
 import os
-import tempfile
 import re
 import requests
-
-host = sys.argv[1]
-number = sys.argv[2]
-address = sys.argv[3]
+from sql import Host
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from time import sleep
 
 def hostify(h):
     s = re.sub(r"[^\w\s]", "", h.lower())
@@ -59,15 +57,9 @@ def tempAndSpawn(launchData, securityGroupID, subnetID):
     ip, iid = spawn(securityGroupID, subnetID, fname)
 
     return ip,iid
-            
 
-#TODO: determine region from google
-#TODO: select ami based on region
-#TODO: determine key name from region
-#TODO: determine security group from region
-#TODO: determine subnet from region
-
-frontData = """
+def genLaunch(url):
+    queueData = """
 #!/bin/bash
 
 yum update -y
@@ -76,33 +68,56 @@ cd /home/ec2-user && git clone https://github.com/seanDoJo/flask-messaround.git
 chown -R ec2-user /home/ec2-user/flask-messaround
 export APP_ID={}
 export APP_SECRET={}
-export HOST="{}"
-cd /home/ec2-user/flask-messaround/app && make go
-""".format(os.environ['APP_ID'], os.environ['APP_SECRET'], host+str(number))
-
-queueData = """
-#!/bin/bash
-
-yum update -y
-yum install -y git
-cd /home/ec2-user && git clone https://github.com/seanDoJo/flask-messaround.git
-chown -R ec2-user /home/ec2-user/flask-messaround
-export APP_ID={}
-export APP_SECRET={}
-export HOST={}{}
+export HOST={}
 cd /home/ec2-user/flask-messaround/uwsgi && make go
-""".format(os.environ['APP_ID'], os.environ['APP_SECRET'], hostify(host), number)
+""".format(os.environ['APP_ID'], os.environ['APP_SECRET'], url)
+    return queueData
 
-#front_ip, front_id = tempAndSpawn(frontData, 'sg-0cae6e997c3bbcb91', 'subnet-3ee3df73')
-queue_ip, queue_id = tempAndSpawn(queueData, 'sg-0b4efff588cd6b30e', 'subnet-3ee3df73')
+def notifyProxy(url, ip, read, write):
+    return requests.post(
+        "http://ec2-18-217-113-46.us-east-2.compute.amazonaws.com:8000/addqueue",
+        json={
+            'url': "{}".format(url),
+            'ip_addr': ip,
+            'read_port': read,
+            'write_port': write
+        }
+    )
 
-r = requests.post(
-    "http://ec2-18-217-113-46.us-east-2.compute.amazonaws.com:8000/addqueue",
-    json={
-        'url': "{}{}".format(hostify(host), number),
-        'ip_addr': queue_ip,
-        'read_port': 8000,
-        'write_port': 8080
-    }
-)
-print(r)
+if __name__ == '__main__':
+    shdir = '/dev/shm'
+    engine = create_engine("sqlite:///test_db.db")
+    Base.metadata.bind = engine
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+
+    while True:
+        filenames = []
+        for (paths, names, filenames) in os.walk(shdir):
+            files.extend(filenames)
+
+        if len(filenames):
+            with open(filenames[0], 'r') as ftoadd:
+                newData = json.loads(ftoadd.read())
+            host = newData['host']
+            number = newData['store_id']
+            url = "{}{}".format(hostify(host), number)
+            address = newData['address']
+
+            queue_ip, queue_id = tempAndSpawn(genLaunch(url), 'sg-0b4efff588cd6b30e', 'subnet-3ee3df73')
+
+            newHost = Host(
+                host=host,
+                url=url,
+                address=address,
+                latitude="wip",
+                longitude="wip",
+                queue=queue_ip
+            )
+
+            session.add(newHost)
+            session.commit()
+
+            notifyProxy(url, queue_ip, 8000, 8080)
+            os.remove(filenames[0])
+        sleep(5)
