@@ -34,11 +34,6 @@ def get(host):
     hostname = r.get(host)
     if not hostname:
         exists = False
-
-        print(host)
-        for h in session.query(Host):
-            print(h.url)
-
         for h in session.query(Host).filter_by(url=host):
             exists = True
             r.set(host, h.host)
@@ -61,3 +56,17 @@ def get(host):
                 "availability": item.availability,
         }
     return jsonify(data), 200
+
+@app.route('/list/<token>', methods=['GET'])
+@validateToken(accessToken, r)
+def list():
+    hosts = {}
+    for h in session.query(Host):
+        hosts[h.host] = {
+            'url': h.url,
+            'lat': h.latitude,
+            'long': h.longitude,
+            'addr': h.address,
+            'photo': h.photo,
+        }
+    return jsonify(hosts), 200
