@@ -8,7 +8,7 @@ class HostData(Base):
 
     id = Column(Integer, primary_key=True)
     host = Column(String(64), unique=True)
-    item = Column(String(128))
+    item = Column(String(128), unique=True)
     category = Column(String(128))
     price = Column(String(32))
     description = Column(String(32))
