@@ -62,6 +62,51 @@ http {
 
 	access_log  /var/log/nginx/uwsgi.access.log  main;
 
+	location /create {
+		include uwsgi_params;
+		uwsgi_pass 172.31.26.142:8000;
+		
+		proxy_redirect off;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Host $server_name;
+	}
+
+	location /get {
+		include uwsgi_params;
+		uwsgi_pass 172.31.26.20:4242;
+		
+		proxy_redirect off;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Host $server_name;
+	}
+
+	location /list {
+		include uwsgi_params;
+		uwsgi_pass 172.31.26.20:4242;
+		
+		proxy_redirect off;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Host $server_name;
+	}
+
+	location /update {
+		include uwsgi_params;
+		uwsgi_pass 172.31.26.20:4242;
+		
+		proxy_redirect off;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Host $server_name;
+	}
+		
+
 	include /home/ec2-user/flask-messaround/proxy/conf/*.conf;
     }
 
