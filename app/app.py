@@ -3,6 +3,7 @@ from utils.utils import processUpdate, processCreate, validateToken, getAccessTo
 from utils.sql import Host, Base, HostData
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import requests
 import redis
 import os
 
@@ -33,6 +34,11 @@ def get(host):
     hostname = r.get(host)
     if not hostname:
         exists = False
+
+        print(host)
+        for h in session.query(Host):
+            print(h.url)
+
         for h in session.query(Host).filter_by(url=host):
             exists = True
             r.set(host, h.host)

@@ -13,6 +13,7 @@ kill :
 
 run : 
 	ln -s ../utils utils
+	/usr/bin/python35 utils/sql.py
 	/usr/local/bin/uwsgi --ini config.ini
 
 go : py_deps conf_redis
@@ -29,6 +30,8 @@ py_deps :
 	pip-3.5 install flask
 	pip-3.5 install uwsgi 
 	pip-3.5 install requests
+	pip-3.5 install sqlalchemy
+	pip-3.5 install pymysql
 
 conf_redis : build_redis
 	mkdir /etc/redis
