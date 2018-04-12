@@ -3,7 +3,7 @@ import json
 import os
 import re
 import requests
-from sql import Host, Base
+from utils.sql import Host, Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from time import sleep

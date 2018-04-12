@@ -1,5 +1,6 @@
 go :
-	/usr/bin/python35 sql.py
+	ln -s ../utils utils
+	/usr/bin/python35 utils/sql.py
 	/usr/bin/python35 create.py &
 	/usr/local/bin/uwsgi --ini config.ini
 

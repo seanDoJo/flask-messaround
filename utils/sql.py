@@ -3,6 +3,19 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+class HostData(Base):
+    __tablename__ = "hostdata"
+
+    id = Column(Integer, primary_key=True)
+    host = Column(String(64))
+    item = Column(String(128))
+    category = Column(String(128))
+    price = Column(String(32))
+    description = Column(String(32))
+    photo = Column(String(32))
+    options = Column(String(32))
+    availability = Column(String(32))
+
 class Host(Base):
     __tablename__ = "hosts"
 
@@ -16,6 +29,7 @@ class Host(Base):
 
     def __repr__(self):
         return "<Host(host={}, url={}, address={}, latitude={}, longitude={}, queue={}".format(self.host, self.url, self.address, self.latitude, self.longitude, self.queue)
+
 
 if __name__ == '__main__':
     from sqlalchemy import create_engine
