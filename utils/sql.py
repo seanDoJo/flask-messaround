@@ -7,7 +7,7 @@ class HostData(Base):
     __tablename__ = "hostdata"
 
     id = Column(Integer, primary_key=True)
-    host = Column(String(64))
+    host = Column(String(64), unique=True)
     item = Column(String(128))
     category = Column(String(128))
     price = Column(String(32))
