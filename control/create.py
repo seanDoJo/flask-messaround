@@ -121,7 +121,8 @@ if __name__ == '__main__':
                 address=address,
                 latitude="wip",
                 longitude="wip",
-                queue=queue_ip
+                queue=queue_ip,
+                photo="dummy.png",
             )
 
             session.add(newHost)
