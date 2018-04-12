@@ -2,6 +2,11 @@ import requests
 import os
 
 d = os.getenv("ACCESS_TOKEN", "none")
+#r = requests.get("http://ec2-18-217-113-46.us-east-2.compute.amazonaws.com/get/the-walrus1/{}".format(d))
+r = requests.get("http://ec2-18-217-113-46.us-east-2.compute.amazonaws.com/list/{}".format(d))
+print(r)
+print(r.json())
+exit(0)
 r = requests.post("http://ec2-18-217-113-46.us-east-2.compute.amazonaws.com/create/{}".format("TfrNGMtxMo"), json={"host": "The Walrus", "store_id": 1, "address":"test address"})
 print(r)
 print(r.json())

@@ -7,8 +7,8 @@ class HostData(Base):
     __tablename__ = "hostdata"
 
     id = Column(Integer, primary_key=True)
-    host = Column(String(64), unique=True)
-    item = Column(String(128), unique=True)
+    host = Column(String(64))
+    item = Column(String(128))
     category = Column(String(128))
     price = Column(String(32))
     description = Column(String(32))
@@ -20,12 +20,13 @@ class Host(Base):
     __tablename__ = "hosts"
 
     id = Column(Integer, primary_key=True)
-    host = Column(String(64))
-    url = Column(String(128))
+    host = Column(String(64), unique=True)
+    url = Column(String(128), unique=True)
     address = Column(String(128))
     latitude = Column(String(32))
     longitude = Column(String(32))
     queue = Column(String(32))
+    photo = Column(String(32))
 
     def __repr__(self):
         return "<Host(host={}, url={}, address={}, latitude={}, longitude={}, queue={}".format(self.host, self.url, self.address, self.latitude, self.longitude, self.queue)
