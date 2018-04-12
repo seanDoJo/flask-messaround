@@ -70,3 +70,47 @@ def list():
             'photo': h.photo,
         }
     return jsonify(hosts), 200
+
+@app.route('/update/<host>/<token>', methods=['POST'])
+@validateToken(accessToken, r)
+def update(host):
+    if not request.json:
+        return jsonify({"error": "invalid request format"}), 400
+    if 'categories' not in request.json:
+        return jsonfiy({"error": "update format incorrect"}), 400
+
+    hostname = r.get(host)
+    if not hostname:
+        exists = False
+        for h in session.query(Host).filter_by(url=host):
+            exists = True
+            r.set(host, h.host)
+            hostname = h.host
+            break
+        if not exists:
+            return jsonify({"error": "host doesn't exist"}), 400
+
+    # TODO: move all updates to single transaction
+    for cat in request.json['categories']:
+        for item in request.json['categories'][cat]:
+            exists = False
+            for existingItem in session.query(HostData).filter_by(host=hostname, category=cat, item=item):
+                exists = True
+                existingItem.price = request.json['categories'][cat][item]['price']
+                session.commit()
+                break
+            if not exists:
+                newItem = HostData(
+                    host=hostname,
+                    item=item,
+                    category=cat,
+                    price=request.json['categories'][cat][item]['price'],
+                    description="NULL",
+                    photo="NULL",
+                    options="NULL",
+                    availability="NULL",
+                )
+
+                session.add(newItem)
+                session.commit()
+    return jsonify({"success": "received"}), 201
