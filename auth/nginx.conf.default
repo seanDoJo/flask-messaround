@@ -32,30 +32,6 @@ http {
 
     #gzip  on;
 
-    server {
-        listen       80;
-        server_name  localhost;
-
-        #charset koi8-r;
-
-        access_log /var/log/nginx/host.access.log  main;
-
-        location / {
-            root   /var/www/bibe;
-            index  index.html index.htm;
-        }
-
-        #error_page  404              /404.html;
-
-        # redirect server error pages to the static page /50x.html
-        #
-        error_page   500 502 503 504  /50x.html;
-        location = /50x.html {
-            root   html;
-        }
-
-    }
-
     # HTTPS server
     #
     #server {
@@ -76,17 +52,47 @@ http {
     #        index  index.html index.htm;
     #    }
     #}
-server {
-	listen 8080;
-	listen [::]:8080;
+    server {
+	listen 8000;
+	listen [::]:8000;
 
 	root /usr/share/nginx/www;
 
 	index index.html index.htm index.nginx-debian.html;
 
-	access_log  /var/log/nginx/uwsgi.access.log  main;
+	access_log /var/log/nginx/uwsgi.access.log main;
 
-	include /home/ec2-user/flask-messaround/nginx/conf/*.conf;
-}
+	location /get_preauth {
+		include uwsgi_params;
+		uwsgi_pass 127.0.0.1:8080;
+		
+		proxy_redirect off;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Host $server_name;
+	}
 
+    }
+    server {
+	listen 8001;
+	listen [::]:8001;
+
+	root /usr/share/nginx/www;
+
+	index index.html index.htm index.nginx-debian.html;
+
+	access_log /var/log/nginx/uwsgi.access.log main;
+
+	location /get_auth {
+		include uwsgi_params;
+		uwsgi_pass 127.0.0.1:8090;
+		
+		proxy_redirect off;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Host $server_name;
+	}
+    }
 }
